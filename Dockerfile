@@ -13,7 +13,7 @@ USER root
 
 # Copy scripts
 COPY app /home/matchmaker/app
-ADD https://raw.githubusercontent.com/AI-Wars-Soc/common/main/default_config.yml /home/matchmaker/default_config.yml
+ADD --chown=matchmaker https://raw.githubusercontent.com/AI-Wars-Soc/common/main/default_config.yml /home/matchmaker/default_config.yml
 RUN chown -R matchmaker /home/matchmaker/app
 ENV PYTHONPATH="/home/matchmaker:/home/matchmaker/app:${PYTHONPATH}"
 

@@ -370,9 +370,11 @@ class Matchmaker(Thread):
                 return True
 
             return _run_typical_match(self.gamemode, self.options)
+        except requests.exceptions.RequestException as e:
+            logger.error("Could not connect to the submission runner: " + str(e.strerror))
         except Exception:
             traceback.print_exc()
-            return False
+        return False
 
     def run(self) -> None:
         if self.gamemode.player_count < 1:
@@ -380,11 +382,8 @@ class Matchmaker(Thread):
 
         while True:
             start = time.process_time_ns()
-            try:
-                success = self._run_one()
-            except requests.exceptions.RequestException as e:
-                logger.error("Could not connect to the submission runner: " + str(e.strerror))
-                success = False
+
+            success = self._run_one()
             diff = (time.process_time_ns() - start) / 1e9
 
             wait_time = self.seconds_per_run - diff

@@ -380,7 +380,11 @@ class Matchmaker(Thread):
 
         while True:
             start = time.process_time_ns()
-            success = self._run_one()
+            try:
+                success = self._run_one()
+            except requests.exceptions.RequestException as e:
+                logger.error("Could not connect to the submission runner: " + str(e.strerror))
+                success = False
             diff = (time.process_time_ns() - start) / 1e9
 
             wait_time = self.seconds_per_run - diff

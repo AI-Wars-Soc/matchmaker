@@ -296,11 +296,17 @@ def _save_result(submissions: List[Submission],
 
 def _run_match(gamemode: Gamemode, options, submissions: List[Submission]) -> dict:
     submission_hashes = [submission.files_hash for submission in submissions]
-    return requests.get('http://runner:8080/run', {
-        **options,
+    response = requests.get('http://runner:8080/run', {
+        "options": json.dumps(options),
         "gamemode": gamemode.name,
-        "submissions": ",".join(submission_hashes),
-    }).json()
+        "submissions": json.dumps(submission_hashes),
+    })
+
+    if response.status_code != 200:
+        logger.error("Error running match: " + response.text)
+        raise requests.exceptions.RequestException(f"Non-ok response code: {response.status_code}")
+
+    return response.json()
 
 
 def _run_typical_match(gamemode: Gamemode, options) -> bool:

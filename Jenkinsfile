@@ -11,6 +11,9 @@ pipeline {
     }
 
     stage('Push') {
+	  when {
+	    branch 'main'
+	  }
       steps {
         sh 'docker login --username joeoc2001 --password $HUB_ACCESS_TOKEN && docker push aiwarssoc/matchmaker:latest'
       }

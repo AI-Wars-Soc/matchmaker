@@ -13,13 +13,12 @@ WORKDIR /home/matchmaker
 # Install python libraries as user
 USER matchmaker
 COPY requirements.txt ./
-RUN pip3 install --no-cache-dir -r requirements.txt
-USER root
+RUN python3 -m pip install --upgrade pip \
+ && pip3 install --no-cache-dir -r requirements.txt
 
 # Copy scripts
-COPY app /home/matchmaker/app
+COPY --chown=matchmaker app /home/matchmaker/app
 ADD --chown=matchmaker https://raw.githubusercontent.com/AI-Wars-Soc/common/main/default_config.yml /home/matchmaker/default_config.yml
-RUN chown -R matchmaker /home/matchmaker/app
 
 WORKDIR /home/matchmaker
 USER matchmaker

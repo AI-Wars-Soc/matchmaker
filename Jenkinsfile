@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t aiwarssoc/matchmaker:latest .'
+        sh 'docker build --pull --no-cache -t aiwarssoc/matchmaker:latest .'
       }
     }
 

@@ -1,5 +1,5 @@
 # Dockerfile for sandbox in which python 3 code is run
-FROM python:3-buster
+FROM python:3.8-buster
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=Europe/London \
